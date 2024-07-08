@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-'''This is task 0's module.'''
-
+'''This is task 1's module.'''
 import asyncio
-import random
+from typing import List
 
 
-async def wait_random(max_delay: int = 10) -> float:
+wait_random = __import__('0-basic_async_syntax').wait_random
 
-    '''This waits for a random number of seconds.'''
-    wait_time = random.random() * max_delay
-    await asyncio.sleep(wait_time)
-    return wait_time
+
+async def wait_n(n: int, max_delay: int) -> List[float]:
+    '''This executes wait_random n times.
+    '''
+    wait_times = await asyncio.gather(
+        *tuple(map(lambda _: wait_random(max_delay), range(n)))
+    )
+    return sorted(wait_times)
